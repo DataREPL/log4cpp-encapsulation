@@ -19,10 +19,8 @@ public:
 	static void destroy();
 
 	void setPriority(Priority priority);
-	void error(const char *msg);
-	void warn(const char *msg);
-	void debug(const char *msg);
-	void info(const char *mgs);
+
+    log4cpp::Category *getLogger();
 
 private:
 	Mylog();
@@ -39,10 +37,8 @@ inline std::string int2string(int line)
 	return os.str();
 }
 
-#define postfix(msg)  std::string(msg).append(" ##")\
-	.append(__FILE__).append(":").append(__func__)\
-	.append(":").append(int2string(__LINE__))\
-	.append("##").c_str()
+#define prefix(fmt)  std::string(__func__).append(": ").append(int2string(__LINE__))\
+	.append(": ").append(fmt).c_str()
 
 #ifdef LOG4CPP
 Mylog &log = Mylog::getInstance();
@@ -50,10 +46,9 @@ Mylog &log = Mylog::getInstance();
 extern Mylog &log;
 #endif
 
-#define LOG_ERROR(msg) log.error(postfix(msg)) 
-#define LOG_WARN(msg)  log.warn(postfix(msg))
-#define LOG_INFO(msg)  log.info(postfix(msg))
-#define LOG_DEBUG(msg) log.debug(postfix(msg))
-
+#define LOG_ERROR(fmt,...) log.getLogger()->error(prefix(fmt), #__VA_ARGS__)
+#define LOG_WARN(fmt,...)  log.getLogger()->warn(prefix(fmt), #__VA_ARGS__)
+#define LOG_INFO(fmt,...)  log.getLogger()->info(prefix(fmt), #__VA_ARGS__)
+#define LOG_DEBUG(fmt,...) log.getLogger()->debug(prefix(fmt), #__VA_ARGS__)
 
 #endif

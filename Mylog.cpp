@@ -42,14 +42,12 @@ Mylog::Mylog()
 	pOsAppder->setLayout(pPtnLyt1);
 
 	log4cpp::FileAppender * pFileAppder =
-		new log4cpp::FileAppender("fileAppender", "../log/mylog.txt");
+		new log4cpp::FileAppender("fileAppender", "./mylog.txt");
 	pFileAppder->setLayout(pPtnLyt2);
 
 	catRef_.setPriority(log4cpp::Priority::DEBUG);
 	catRef_.addAppender(pOsAppder);
 	catRef_.addAppender(pFileAppder);
-
-	catRef_.info("Mylog create success");
 
 }
 
@@ -75,22 +73,6 @@ void Mylog::setPriority(Priority priority)
 	}
 }
 
-void Mylog::error(const char * msg)
-{
-	catRef_.error(msg);
-}
-
-void Mylog::warn(const char * msg)
-{
-	catRef_.warn(msg);
-}
-
-void Mylog::info(const char * msg)
-{
-	catRef_.info(msg);
-}
-
-void Mylog::debug(const char * msg)
-{
-	catRef_.debug(msg);
+log4cpp::Category* Mylog::getLogger() {
+    return &catRef_;
 }
