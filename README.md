@@ -5,7 +5,8 @@
 
 ### 步骤
 Step 1.创建build目录执行 
-```cmake ..
+```
+cmake ..
 ```
 
 Step 2.build目录进入log4cpp编译静态库
